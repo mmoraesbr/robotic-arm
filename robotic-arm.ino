@@ -23,7 +23,7 @@ void setup() {
   crawServo.write(50, DEFAULT_SPEED, false);
   baseServo.write(90, DEFAULT_SPEED, false);
   elevatorServo.write(140, DEFAULT_SPEED, false);
-  armServo.write(70, DEFAULT_SPEED, false);
+  armServo.write(75, DEFAULT_SPEED, false);
 }
 
 void loop() {
@@ -35,9 +35,6 @@ void loop() {
     char axis = Serial.read();
     // skip end of line and space
     if (axis != '\n' && axis != ' ') {
-      int angle = readInt();
-      int speed = readInt();
-      boolean block = readBoolean();
 
       VarSpeedServo *servo;
 
@@ -51,8 +48,14 @@ void loop() {
         servo = &armServo;        
       }
 
-      servo->write(angle, speed, block);
-      Serial.print('1');
+      if (servo != NULL) {
+        int angle = readInt();
+        int speed = readInt();
+        boolean block = readBoolean();
+
+        servo->write(angle, speed, block);
+        Serial.print('1');
+      }
     }
   }
 }
